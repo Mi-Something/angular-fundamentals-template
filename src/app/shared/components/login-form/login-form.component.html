@@ -17,13 +17,14 @@
             #emailCtrl="ngModel"
           />
           <span
-            *ngIf="(loginForm.submitted || emailCtrl.touched) && emailCtrl.errors?.['required']"
             class="text-danger"
-            >Email is required.</span
+            *ngIf="loginForm.controls['email']?.errors?.['required']"
           >
+            Email is required.
+          </span>
           <span
-            *ngIf="(loginForm.submitted || emailCtrl.touched) && emailCtrl.errors?.['emailInvalid']"
             class="text-danger"
+            *ngIf="loginForm.controls['email']?.errors?.['emailInvalid']"
           >
             Email is invalid.
           </span>
@@ -41,8 +42,8 @@
             #passwordCtrl="ngModel"
           />
           <span
-            *ngIf="(loginForm.submitted || passwordCtrl.touched) && passwordCtrl.errors?.['required']"
             class="text-danger"
+            *ngIf="loginForm.controls['password']?.errors?.['required']"
           >
             Password is required.
           </span>

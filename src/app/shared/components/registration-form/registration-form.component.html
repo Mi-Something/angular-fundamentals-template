@@ -40,13 +40,13 @@
           />
           <span
             class="text-danger"
-            *ngIf="(submitted || registrationForm.get('email')?.touched) && registrationForm.get('email')?.errors?.['required']"
+            *ngIf="registrationForm.get('email')?.errors?.['required']"
           >
             Email is required.
           </span>
           <span
             class="text-danger"
-            *ngIf="(submitted || registrationForm.get('email')?.touched) && registrationForm.get('email')?.errors?.['emailInvalid']"
+            *ngIf="registrationForm.get('email')?.errors?.['emailInvalid']"
           >
             Email is invalid.
           </span>
@@ -63,7 +63,7 @@
           />
           <span
             class="text-danger"
-            *ngIf="(submitted || registrationForm.get('password')?.touched) && registrationForm.get('password')?.errors?.['required']"
+            *ngIf="registrationForm.get('password')?.errors?.['required']"
           >
             Password is required.
           </span>
