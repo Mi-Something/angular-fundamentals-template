@@ -1,4 +1,4 @@
-@import 'src/app/shared/styles/styles';
+@import "src/app/shared/styles/styles";
 
 .registration-form {
   width: 260px;
@@ -18,28 +18,4 @@ input.ng-invalid.ng-dirty {
 }
 form.ng-submitted input.ng-invalid {
   border-color: red;
-}
-
-.password-wrapper {
-  position: relative;
-
-  input {
-    width: 100%;
-    padding-right: 40px;
-  }
-
-  .eye-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-
-    &:hover {
-      color: #000;
-    }
-  }
 }
