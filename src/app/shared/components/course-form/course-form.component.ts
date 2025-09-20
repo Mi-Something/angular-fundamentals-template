@@ -28,7 +28,7 @@ export class CourseFormComponent {
       author: [
         "",
         [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9 ]+$/)],
-      ], // <-- новый верхнеуровневый контроль
+      ],
     });
   }
   get authors(): FormArray {

@@ -30,12 +30,11 @@ const components = [
   CourseFormComponent,
   DurationPipe,
   CustomDatePipe,
-  EmailValidatorDirective,
 ];
 
 @NgModule({
-  declarations: [components, TogglePasswordDirective],
+  declarations: [components, EmailValidatorDirective, TogglePasswordDirective],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule],
-  exports: [components, TogglePasswordDirective],
+  exports: [components, EmailValidatorDirective, TogglePasswordDirective],
 })
 export class SharedModule {}
