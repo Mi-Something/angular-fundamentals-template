@@ -22,15 +22,13 @@ export class CourseFormComponent {
     this.courseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
       description: ["", [Validators.required, Validators.minLength(2)]],
-      duration: [, [Validators.required, Validators.min(0)]],
+      duration: [0, [Validators.required, Validators.min(0)]],
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
-      newAuthor: this.fb.group({
-        name: [
-          "",
-          [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9 ]+$/)],
-        ],
-      }),
+      author: [
+        "",
+        [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9 ]+$/)],
+      ], // <-- новый верхнеуровневый контроль
     });
   }
   get authors(): FormArray {
@@ -41,27 +39,17 @@ export class CourseFormComponent {
     return this.courseForm.get("courseAuthors") as FormArray;
   }
 
-  get newAuthorName(): FormControl {
-    return this.courseForm.get("newAuthor.name") as FormControl;
-  }
-
   addAuthor() {
-    const control = this.newAuthorName;
-
+    const control = this.courseForm.get("author") as FormControl;
     control.markAsTouched();
 
-    if (!control.value || !control.value.trim()) {
-      return;
-    }
+    if (!control.value || !control.value.trim()) return;
+    if (control.invalid) return;
 
-    if (control.invalid) {
-      return;
-    }
-
-    const authorName = control.value.trim();
-    this.authors.push(new FormControl(authorName));
+    this.authors.push(new FormControl(control.value.trim()));
     control.reset();
   }
+
   addAuthorToCourse(index: number) {
     const author = this.authors.at(index) as FormControl;
     this.courseAuthors.push(this.fb.control(author.value));

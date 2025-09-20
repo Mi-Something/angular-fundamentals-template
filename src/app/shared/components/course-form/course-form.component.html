@@ -89,7 +89,7 @@
                 type="text"
                 id="author"
                 placeholder="Input text"
-                [formControl]="newAuthorName"
+                formControlName="author"
               />
               <app-button
                 type="button"
@@ -101,7 +101,7 @@
             <span
               id="authorPatternError"
               class="text-danger"
-              *ngIf="newAuthorName.errors?.['pattern'] && (newAuthorName.touched || submitted)"
+              *ngIf="(submitted || courseForm.get('author')?.touched) && courseForm.get('author')?.errors?.['required']"
             >
               New author should contain only latin letters and numbers.
             </span>
@@ -109,7 +109,7 @@
             <span
               id="authorMinLengthError"
               class="text-danger"
-              *ngIf="newAuthorName.errors?.['minlength'] && (newAuthorName.touched || submitted)"
+              *ngIf="(submitted || courseForm.get('author')?.touched) && courseForm.get('author')?.errors?.['minlength']"
             >
               Author name must be at least 2 characters.
             </span>
