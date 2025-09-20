@@ -10,9 +10,10 @@
   border-radius: 4px;
   color: white;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 650;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.1s ease;
+  width: 100%;
 
   &:hover {
     background: #016486;

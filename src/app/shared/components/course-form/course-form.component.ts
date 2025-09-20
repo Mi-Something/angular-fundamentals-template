@@ -1,19 +1,100 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 import {
-  FormBuilder, FormGroup
-} from '@angular/forms';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormArray,
+} from "@angular/forms";
+import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-  selector: 'app-course-form',
-  templateUrl: './course-form.component.html',
-  styleUrls: ['./course-form.component.scss'],
+  selector: "app-course-form",
+  templateUrl: "./course-form.component.html",
+  styleUrls: ["./course-form.component.scss"],
 })
 export class CourseFormComponent {
+  courseForm!: FormGroup;
+  submitted = false;
   constructor(public fb: FormBuilder, public library: FaIconLibrary) {
     library.addIconPacks(fas);
+    this.courseForm = this.fb.group({
+      title: ["", [Validators.required, Validators.minLength(2)]],
+      description: ["", [Validators.required, Validators.minLength(2)]],
+      duration: [, [Validators.required, Validators.min(0)]],
+      authors: this.fb.array([]),
+      courseAuthors: this.fb.array([]),
+      newAuthor: this.fb.group({
+        name: [
+          "",
+          [Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9 ]+$/)],
+        ],
+      }),
+    });
   }
-  courseForm!: FormGroup;
+  get authors(): FormArray {
+    return this.courseForm.get("authors") as FormArray;
+  }
+
+  get courseAuthors(): FormArray {
+    return this.courseForm.get("courseAuthors") as FormArray;
+  }
+
+  get newAuthorName(): FormControl {
+    return this.courseForm.get("newAuthor.name") as FormControl;
+  }
+
+  addAuthor() {
+    const control = this.newAuthorName;
+
+    control.markAsTouched();
+
+    if (!control.value || !control.value.trim()) {
+      return;
+    }
+
+    if (control.invalid) {
+      return;
+    }
+
+    const authorName = control.value.trim();
+    this.authors.push(new FormControl(authorName));
+    control.reset();
+  }
+  addAuthorToCourse(index: number) {
+    const author = this.authors.at(index) as FormControl;
+    this.courseAuthors.push(this.fb.control(author.value));
+    this.authors.removeAt(index);
+  }
+
+  removeAuthorFromCourse(index: number) {
+    const author = this.courseAuthors.at(index) as FormControl;
+    this.authors.push(this.fb.control(author.value));
+    this.courseAuthors.removeAt(index);
+  }
+  deleteAuthor(index: number) {
+    this.authors.removeAt(index);
+  }
+  get authorsControls(): FormControl[] {
+    return this.authors.controls as FormControl[];
+  }
+
+  get courseAuthorsControls(): FormControl[] {
+    return this.courseAuthors.controls as FormControl[];
+  }
+
+  onSubmit() {
+    this.submitted = true;
+
+    if (this.courseForm.valid) {
+      console.log("Course values:", this.courseForm.value);
+    } else {
+      console.log("Form is invalid");
+    }
+  }
+  getAuthorsControls(): FormControl[] {
+    return this.authors.controls as FormControl[];
+  }
   // Use the names `title`, `description`, `author`, 'authors' (for authors list), `duration` for the form controls.
 }
