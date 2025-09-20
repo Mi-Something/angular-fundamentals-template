@@ -40,6 +40,7 @@
           />
           <span
             class="text-danger"
+            id="emailErrorMessage"
             *ngIf="registrationForm.get('email')?.errors?.['required']"
           >
             Email is required.
@@ -63,6 +64,7 @@
           />
           <span
             class="text-danger"
+            id="passwordErrorMessage"
             *ngIf="registrationForm.get('password')?.errors?.['required']"
           >
             Password is required.
