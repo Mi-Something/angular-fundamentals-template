@@ -5,5 +5,9 @@
     [placeholder]="placeholder"
     [(ngModel)]="searchTerm"
   />
-  <app-button buttonText="Search"></app-button>
+  <app-button
+    buttonText="Search"
+    type="button"
+    (click)="onSearch()"
+  ></app-button>
 </div>
