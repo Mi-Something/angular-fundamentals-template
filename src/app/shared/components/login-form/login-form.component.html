@@ -19,13 +19,13 @@
           <span
             class="text-danger"
             id="emailErrorMessage"
-            *ngIf="loginForm.controls['email']?.errors?.['required']"
+            *ngIf="(submitted || emailCtrl.touched) && loginForm.controls['email']?.errors?.['required']"
           >
             Email is required.
           </span>
           <span
             class="text-danger"
-            *ngIf="loginForm.controls['email']?.errors?.['emailInvalid']"
+            *ngIf="(submitted || emailCtrl.touched) && loginForm.controls['email']?.errors?.['emailInvalid']"
           >
             Email is invalid.
           </span>
@@ -45,7 +45,7 @@
           <span
             class="text-danger"
             id="passwordErrorMessage"
-            *ngIf="loginForm.controls['password']?.errors?.['required']"
+            *ngIf="(submitted || passwordCtrl.touched) && loginForm.controls['password']?.errors?.['required']"
           >
             Password is required.
           </span>
