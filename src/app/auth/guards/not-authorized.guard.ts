@@ -1,26 +1,11 @@
-import { Injectable } from "@angular/core";
-import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from "@angular/router";
+import { inject } from "@angular/core";
+import { CanActivateFn, Router, UrlTree } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 
-@Injectable({
-  providedIn: "root",
-})
-export class NotAuthorizedGuard {
+export const notAuthorizedGuard: CanActivateFn = (): boolean | UrlTree => {
   // Add your code here
-  constructor(private authService: AuthService, private router: Router) {}
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | UrlTree {
-    if (!this.authService.isAuthorised) {
-      return true;
-    }
-    return this.router.createUrlTree(["/courses"]);
-  }
-}
+  return !authService.isAuthorised ? true : router.createUrlTree(["/courses"]);
+};

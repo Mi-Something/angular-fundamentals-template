@@ -1,4 +1,3 @@
-import { Injectable } from "@angular/core";
 import {
   CanMatchFn,
   Route,
@@ -7,18 +6,15 @@ import {
   UrlTree,
 } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { inject } from "@angular/core";
 
-@Injectable({
-  providedIn: "root",
-})
-export class AuthorizedGuard {
+export const authorizedGuard: CanMatchFn = (
+  route: Route,
+  segments: UrlSegment[]
+): boolean | UrlTree => {
   // Add your code here
-  constructor(private authService: AuthService, private router: Router) {}
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canMatch(route: Route, segments: UrlSegment[]): boolean | UrlTree {
-    if (this.authService.isAuthorised) {
-      return true;
-    }
-    return this.router.createUrlTree(["/login"]);
-  }
-}
+  return authService.isAuthorised ? true : router.createUrlTree(["/login"]);
+};

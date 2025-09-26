@@ -18,9 +18,15 @@ export class UserStoreService {
     this.userService
       .getUser()
       .pipe(
-        tap((user: User) => {
-          this.name$$.next(user.name);
-          this.isAdmin$$.next(user.isAdmin);
+        tap({
+          next: (user: User) => {
+            this.name$$.next(user?.name || null);
+            this.isAdmin$$.next(!!user?.isAdmin);
+          },
+          error: () => {
+            this.name$$.next(null);
+            this.isAdmin$$.next(false);
+          },
         })
       )
       .subscribe();

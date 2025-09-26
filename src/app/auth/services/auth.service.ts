@@ -73,7 +73,7 @@ export class AuthService {
     // Add your code here
     return `${API_URL}/login`;
   }
-  getToken(): string | null {
+  public getToken(): string | null {
     return this.sessionStorage.getToken();
   }
 }
