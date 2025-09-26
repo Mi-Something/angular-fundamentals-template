@@ -101,16 +101,16 @@ export class CoursesStoreService {
   filterCourses(value: string) {
     this.isLoading$$.next(true);
 
-    return this.coursesService.filterCourses(value).pipe(
-      tap({
-        next: (res) => {
-          const filteredCourses = Array.isArray(res) ? res : res.result || [];
-          this.courses$$.next(filteredCourses);
-        },
-        complete: () => this.isLoading$$.next(false),
-        error: () => this.isLoading$$.next(false),
-      })
-    );
+    this.coursesService
+      .filterCourses(value)
+      .pipe(
+        tap({
+          next: (filteredCourses) => this.courses$$.next(filteredCourses),
+          complete: () => this.isLoading$$.next(false),
+          error: () => this.isLoading$$.next(false),
+        })
+      )
+      .subscribe(); // подписка обязательна
     // Add your code here
   }
 

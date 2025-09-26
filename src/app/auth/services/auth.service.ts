@@ -27,8 +27,11 @@ export class AuthService {
     private sessionStorage: SessionStorageService
   ) {}
 
-  getToken(): string | null {
-    return this.sessionStorage.getToken();
+  public getToken(): string | null {
+    if (typeof this.sessionStorage?.getToken === "function") {
+      return this.sessionStorage.getToken();
+    }
+    return null;
   }
 
   login(user: UserCredentials): Observable<{ token: string }> {

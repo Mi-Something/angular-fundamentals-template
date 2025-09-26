@@ -38,10 +38,10 @@ export class CoursesService {
     // Add your code here
   }
 
-  filterCourses(value: string): Observable<any> {
+  filterCourses(value: string): Observable<any[]> {
     return this.http
-      .get(`${this.apiUrl}/courses/filter?name=${value}`)
-      .pipe(catchError(() => of({ result: [] })));
+      .get<any[]>(`${this.apiUrl}/courses/filter?name=${value}`)
+      .pipe(catchError(() => of([])));
     // Add your code here
   }
 
