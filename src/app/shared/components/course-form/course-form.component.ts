@@ -8,16 +8,26 @@ import {
 } from "@angular/forms";
 import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CoursesStoreService } from "@app/services/courses-store.service";
+import { OnInit } from "@angular/core";
 
 @Component({
   selector: "app-course-form",
   templateUrl: "./course-form.component.html",
   styleUrls: ["./course-form.component.scss"],
 })
-export class CourseFormComponent {
+export class CourseFormComponent implements OnInit {
   courseForm!: FormGroup;
   submitted = false;
-  constructor(public fb: FormBuilder, public library: FaIconLibrary) {
+  courseId: string | null = null;
+  constructor(
+    public fb: FormBuilder,
+    public library: FaIconLibrary,
+    private route: ActivatedRoute,
+    private router: Router,
+    private coursesStore: CoursesStoreService
+  ) {
     library.addIconPacks(fas);
     this.courseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
@@ -76,13 +86,35 @@ export class CourseFormComponent {
     this.submitted = true;
 
     if (this.courseForm.valid) {
-      console.log("Course values:", this.courseForm.value);
+      const courseData = this.courseForm.value;
+
+      if (this.courseId) {
+        this.coursesStore.editCourse(this.courseId, courseData);
+      } else {
+        this.coursesStore.createCourse(courseData);
+      }
+
+      this.router.navigate(["/courses"]);
     } else {
       console.log("Form is invalid");
     }
   }
-  getAuthorsControls(): FormControl[] {
-    return this.authors.controls as FormControl[];
+
+  ngOnInit(): void {
+    this.courseId = this.route.snapshot.paramMap.get("id");
+
+    if (this.courseId) {
+      this.coursesStore.getCourse(this.courseId).subscribe((course) => {
+        this.courseForm.patchValue({
+          title: course.title,
+          description: course.description,
+          duration: course.duration,
+        });
+        course.authors?.forEach((author: string) => {
+          this.courseAuthors.push(this.fb.control(author));
+        });
+      });
+    }
+    // Use the names `title`, `description`, `author`, 'authors' (for authors list), `duration` for the form controls.
   }
-  // Use the names `title`, `description`, `author`, 'authors' (for authors list), `duration` for the form controls.
 }

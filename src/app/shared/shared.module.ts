@@ -33,8 +33,12 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [components, EmailValidatorDirective, TogglePasswordDirective],
+  declarations: [
+    ...components,
+    EmailValidatorDirective,
+    TogglePasswordDirective,
+  ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule],
-  exports: [components, EmailValidatorDirective, TogglePasswordDirective],
+  exports: [...components, EmailValidatorDirective, TogglePasswordDirective],
 })
 export class SharedModule {}
