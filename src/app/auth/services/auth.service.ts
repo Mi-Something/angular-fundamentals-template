@@ -27,6 +27,10 @@ export class AuthService {
     private sessionStorage: SessionStorageService
   ) {}
 
+  getToken(): string | null {
+    return this.sessionStorage.getToken();
+  }
+
   login(user: UserCredentials): Observable<{ token: string }> {
     // replace 'any' with the required interface
     // Add your code here
@@ -72,8 +76,5 @@ export class AuthService {
   getLoginUrl(): string {
     // Add your code here
     return `${API_URL}/login`;
-  }
-  public getToken(): string | null {
-    return this.sessionStorage.getToken();
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
+import { catchError } from "rxjs/operators";
 
 export interface User {
   email: string;
@@ -17,6 +18,8 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/users/me`);
+    return this.http
+      .get<User>(`${this.apiUrl}/users/me`)
+      .pipe(catchError(() => of({ email: "", name: null, isAdmin: false })));
   }
 }
