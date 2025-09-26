@@ -3,6 +3,20 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  creationDate: string;
+  duration: number;
+  authors: string[];
+}
+
+export interface CoursesResponse {
+  successful: boolean;
+  result: Course[];
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -11,36 +25,36 @@ export class CoursesService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/courses/all`);
+  getAll(): Observable<CoursesResponse> {
+    return this.http.get<CoursesResponse>(`${this.apiUrl}/courses/all`);
     // Add your code here
   }
 
-  createCourse(course: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/courses/add`, course);
+  createCourse(course: Course): Observable<Course> {
+    return this.http.post<Course>(`${this.apiUrl}/courses/add`, course);
     // replace 'any' with the required interface
     // Add your code here
   }
 
-  editCourse(id: string, course: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/courses/${id}`, course);
+  editCourse(id: string, course: Course): Observable<Course> {
+    return this.http.put<Course>(`${this.apiUrl}/courses/${id}`, course);
     // replace 'any' with the required interface
     // Add your code here
   }
 
-  getCourse(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/courses/${id}`);
+  getCourse(id: string): Observable<Course> {
+    return this.http.get<Course>(`${this.apiUrl}/courses/${id}`);
     // Add your code here
   }
 
-  deleteCourse(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/courses/${id}`);
+  deleteCourse(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/courses/${id}`);
     // Add your code here
   }
 
-  filterCourses(value: string): Observable<any[]> {
+  filterCourses(value: string): Observable<Course[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/courses/filter?name=${value}`)
+      .get<Course[]>(`${this.apiUrl}/courses/filter?name=${value}`)
       .pipe(catchError(() => of([])));
     // Add your code here
   }

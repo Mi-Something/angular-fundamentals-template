@@ -18,8 +18,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUser(): Observable<User> {
-    return this.http
-      .get<User>(`${this.apiUrl}/users/me`)
-      .pipe(catchError(() => of({ email: "", name: null, isAdmin: false })));
+    return this.http.get<User>(`${this.apiUrl}/users/me`);
   }
 }

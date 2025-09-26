@@ -28,10 +28,7 @@ export class AuthService {
   ) {}
 
   public getToken(): string | null {
-    if (typeof this.sessionStorage?.getToken === "function") {
-      return this.sessionStorage.getToken();
-    }
-    return null;
+    return this.sessionStorage.getToken();
   }
 
   login(user: UserCredentials): Observable<{ token: string }> {
