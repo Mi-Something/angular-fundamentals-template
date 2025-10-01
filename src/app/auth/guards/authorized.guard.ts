@@ -9,14 +9,7 @@ import { Observable } from "rxjs";
 export class AuthorizedGuard implements CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
   // Add your code here
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  canLoad(route: Route, segments: UrlSegment[]): boolean | UrlTree {
     return this.authService.isAuthorised
       ? true
       : this.router.createUrlTree(["/login"]);
