@@ -23,7 +23,6 @@ export class CoursesStoreService {
       .pipe(
         tap({
           next: (res) => {
-            // Проверяем, что пришло и берём массив
             const courses = Array.isArray(res) ? res : res.result || [];
             this.courses$$.next(courses);
           },
