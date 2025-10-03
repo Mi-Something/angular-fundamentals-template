@@ -2,20 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  creationDate: string;
-  duration: number;
-  authors: string[];
-}
-
-export interface CoursesResponse {
-  successful: boolean;
-  result: Course[];
-}
+import { Course, CoursesResponse } from "@app/features/courses/courses.model";
 
 @Injectable({
   providedIn: "root",

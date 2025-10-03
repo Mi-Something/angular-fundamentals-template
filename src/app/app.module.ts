@@ -9,10 +9,15 @@ import { AuthorizedGuard } from "@app/auth/guards/authorized.guard";
 import { CoursesStoreService } from "@app/services/courses-store.service";
 import { CoursesService } from "@app/services/courses.service";
 import { CoursesModule } from "@features/courses/courses.module";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "@app/auth/interceptors/token.interceptor";
 import { AppRoutingModule } from "./app-routing.module";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
+import { reducers, effects } from "@app/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { environment } from "../environments/environment";
 
 @NgModule({
   declarations: [AppComponent, CourseInfoComponent],
@@ -23,6 +28,13 @@ import { HttpClientModule } from "@angular/common/http";
     CoursesModule,
     AppRoutingModule,
     HttpClientModule,
+
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
+
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 25 })
+      : [],
   ],
   providers: [
     CoursesService,

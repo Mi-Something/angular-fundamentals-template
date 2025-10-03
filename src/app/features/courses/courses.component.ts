@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { CoursesStoreService } from "@app/services/courses-store.service";
+import { CoursesStateFacade } from "@app/store/courses/courses.facade";
 import { UserStoreService } from "@app/user/services/user-store.service";
-import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 
 @Component({
@@ -10,27 +9,27 @@ import { Router } from "@angular/router";
   styleUrls: ["./courses.component.scss"],
 })
 export class CoursesComponent implements OnInit {
-  courses$ = this.coursesStore.courses$;
-  isLoading$ = this.coursesStore.isLoading$;
+  courses$ = this.facade.courses$;
+  isLoading$ = this.facade.isAllCoursesLoading$;
   isAdmin$ = this.userStore.isAdmin$;
 
   searchValue: string = "";
 
   constructor(
-    private coursesStore: CoursesStoreService,
+    private facade: CoursesStateFacade,
     private userStore: UserStoreService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.coursesStore.getAll();
+    this.facade.getAllCourses();
   }
   onSearch() {
     const value = this.searchValue.trim();
     if (value) {
-      this.coursesStore.filterCourses(value);
+      this.facade.getFilteredCourses(value);
     } else {
-      this.coursesStore.getAll();
+      this.facade.getAllCourses();
     }
   }
   editCourse(courseId: string) {
@@ -40,6 +39,6 @@ export class CoursesComponent implements OnInit {
     this.router.navigate([`/courses/${courseId}`]);
   }
   deleteCourse(courseId: string) {
-    this.coursesStore.deleteCourse(courseId);
+    this.facade.deleteCourse(courseId);
   }
 }

@@ -8,7 +8,7 @@
 
 <ul>
   <li *ngFor="let course of courses$ | async">
-    <span>{{ course.name }}</span>
+    <span>{{ course.title }}</span>
     <button (click)="showCourse(course.id)">Show</button>
     <button *ngIf="isAdmin$ | async" (click)="editCourse(course.id)">
       Edit
