@@ -40,7 +40,7 @@ export const initialState: CoursesState = {
   isAllCoursesLoading: false,
   isSingleCourseLoading: false,
   isSearchState: false,
-  errorMessage: null,
+  errorMessage: "",
 };
 
 const startLoading = (
@@ -52,7 +52,7 @@ const startLoading = (
 ) => ({
   ...state,
   [key]: true,
-  errorMessage: null,
+  errorMessage: "",
 });
 
 const fail = (
@@ -90,7 +90,10 @@ const reducerInternal = createReducer(
     startLoading(s, "isSingleCourseLoading")
   ),
   on(CoursesActions.requestFilteredCourses, (s) =>
-    startLoading(s, "isSearchState")
+    startLoading(s, "isAllCoursesLoading")
+  ),
+  on(CoursesActions.requestDeleteCourse, (s) =>
+    startLoading(s, "isAllCoursesLoading")
   ),
 
   on(CoursesActions.requestAllCoursesSuccess, (s, { courses }) =>
