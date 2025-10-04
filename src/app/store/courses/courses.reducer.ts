@@ -71,6 +71,7 @@ const updateCourseInList = (state: CoursesState, course: Course) => ({
   course,
   allCourses:
     state.allCourses?.map((c) => (c.id === course.id ? course : c)) || [],
+  errorMessage: "",
 });
 
 export const coursesReducer = (
@@ -113,8 +114,8 @@ const reducerInternal = createReducer(
   ),
   on(CoursesActions.requestCreateCourseSuccess, (s, { course }) => ({
     ...s,
-
     allCourses: [...(s.allCourses ?? []), course],
+    errorMessage: "",
   })),
 
   on(
