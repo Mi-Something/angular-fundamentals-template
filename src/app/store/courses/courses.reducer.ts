@@ -25,12 +25,12 @@ export const coursesFeatureKey = "courses";
 
 export interface CoursesState {
   // Add your code here
-  allCourses: Course[];
+  allCourses: Course[] | null;
   course: Course | null;
   isAllCoursesLoading: boolean;
   isSingleCourseLoading: boolean;
   isSearchState: boolean;
-  errorMessage: CoursesError | null;
+  errorMessage: CoursesError | string | null;
 }
 
 export const initialState: CoursesState = {
@@ -55,24 +55,30 @@ const startLoading = (
   errorMessage: null,
 });
 
-const fail = (state: CoursesState, { error }: { error: CoursesError }) => ({
+const fail = (
+  state: CoursesState,
+  payload: { error: CoursesError | string }
+) => ({
   ...state,
   isAllCoursesLoading: false,
   isSingleCourseLoading: false,
   isSearchState: false,
-  errorMessage: error,
+  errorMessage: payload.error,
 });
 
 const updateCourseInList = (state: CoursesState, course: Course) => ({
   ...state,
   course,
-  allCourses: state.allCourses.map((c) => (c.id === course.id ? course : c)),
+  allCourses:
+    state.allCourses?.map((c) => (c.id === course.id ? course : c)) || [],
 });
 
 export const coursesReducer = (
   state: CoursesState | undefined,
   action: Action
 ): CoursesState => reducerInternal(state, action);
+
+export const reducer = coursesReducer;
 
 const reducerInternal = createReducer(
   initialState,
@@ -104,7 +110,8 @@ const reducerInternal = createReducer(
   ),
   on(CoursesActions.requestCreateCourseSuccess, (s, { course }) => ({
     ...s,
-    allCourses: [...s.allCourses, course],
+
+    allCourses: [...(s.allCourses ?? []), course],
   })),
 
   on(
