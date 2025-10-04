@@ -115,6 +115,9 @@ const reducerInternal = createReducer(
   on(CoursesActions.requestCreateCourse, (s) =>
     startLoading(s, "isAllCoursesLoading")
   ),
+  on(CoursesActions.requestEditCourse, (s) =>
+    startLoading(s, "isAllCoursesLoading")
+  ),
   on(CoursesActions.requestCreateCourseSuccess, (s, { course }) => ({
     ...s,
     allCourses: [...(s.allCourses ?? []), course],
